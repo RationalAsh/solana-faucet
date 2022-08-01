@@ -11,6 +11,7 @@ import {
 } from '@solana/wallet-adapter-wallets';
 import { clusterApiUrl } from '@solana/web3.js';
 import React, { FC, ReactNode, useMemo } from 'react';
+import Faucet from './components/FaucetCard';
 import NavigationBar from './components/NavigationBar'
 
 require('./App.css');
@@ -68,6 +69,7 @@ const Content: FC = () => {
     return (
         <>
             <NavigationBar />
+            <Faucet/>
         </>
     );
 };

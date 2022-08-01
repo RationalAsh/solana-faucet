@@ -2,11 +2,13 @@ import * as React from 'react';
 import { Button, Col, Container, Image, Modal, Navbar, Row } from 'react-bootstrap';
 import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { useState } from 'react';
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 
 interface INavigationBarProps {
 }
 
 const NavigationBar: React.FunctionComponent<INavigationBarProps> = (props) => {
+  // Set up our context and state
   const [showAboutModal, setShowAboutModal] = useState(false);
 
   return (

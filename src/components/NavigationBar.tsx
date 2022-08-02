@@ -3,6 +3,7 @@ import { Button, Col, Container, Image, Modal, Navbar, Row } from 'react-bootstr
 import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { useState } from 'react';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import brandlogo from '../img/brand-logo.png'
 
 interface INavigationBarProps {
 }
@@ -17,7 +18,7 @@ const NavigationBar: React.FunctionComponent<INavigationBarProps> = (props) => {
         <Container>
             <Navbar.Brand href="/">
               <img
-                src="/brand-logo.png"
+                src={brandlogo}
                 width="30"
                 height="30"
                 className="d-inline-block align-top"

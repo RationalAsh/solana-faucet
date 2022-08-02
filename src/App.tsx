@@ -12,6 +12,7 @@ import {
 import { clusterApiUrl } from '@solana/web3.js';
 import React, { FC, ReactNode, useMemo } from 'react';
 import Faucet from './components/FaucetCard';
+import Footer from './components/Footer';
 import NavigationBar from './components/NavigationBar'
 
 require('./App.css');
@@ -70,6 +71,7 @@ const Content: FC = () => {
         <>
             <NavigationBar />
             <Faucet/>
+            <Footer/>
         </>
     );
 };

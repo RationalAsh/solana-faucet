@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Button, ButtonGroup, Card, Col, Container, Form, Nav, Row, Toast, ToastContainer } from 'react-bootstrap';
-import { useConnection, useWallet } from '@solana/wallet-adapter-react';
-import { useState, useEffect } from 'react';
+import { Button, Card, Col, Container, Row, Form, ToastContainer } from 'react-bootstrap';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { useState } from 'react';
 import { clusterApiUrl, Connection, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import NotificationToast from './NotificationToast';
@@ -12,8 +12,8 @@ export interface IFaucetProps {
 
 export default function Faucet (props: IFaucetProps) {
     // Set up our context and state.
-    const { connection } = useConnection();
-    const { publicKey, sendTransaction, wallet, connected } = useWallet();
+    // const { connection } = useConnection();
+    const { publicKey, connected } = useWallet();
     const [ currentPubkey, setCurrentPubkey ] = useState("");
     const [ solAmount, setSolAmount ] = useState<number>(1.0);
     const [ isTestnet, setIsTestnet ] = useState<boolean>(true);

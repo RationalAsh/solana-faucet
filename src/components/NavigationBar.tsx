@@ -42,6 +42,9 @@ const NavigationBar: React.FunctionComponent<INavigationBarProps> = (props) => {
             wallets. I made it to learn how to write apps that interact with Solana and to make it easier 
             to airdrop myself SOL for the many Solana projects I'm trying out. To find out more about me, 
             check out <a href="https://www.ashwinnarayan.com/" target="_blank">my home page</a>.</p> 
+
+            <p className='text-justify'>This project is open source. Check out the code 
+            <a href='https://github.com/RationalAsh/solana-faucet' target='_blank' rel='noreferrer'>here</a></p>
         </Modal.Body>
     </Modal>
     </>

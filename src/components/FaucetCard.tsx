@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { Card, Col, Container, Form, Row } from 'react-bootstrap';
+import { Button, ButtonGroup, Card, Col, Container, Form, Nav, Row, Toast, ToastContainer } from 'react-bootstrap';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { useState, useEffect } from 'react';
+import { clusterApiUrl, Connection, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
+import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 
 export interface IFaucetProps {
 }
@@ -12,15 +14,50 @@ export default function Faucet (props: IFaucetProps) {
     const { connection } = useConnection();
     const { publicKey, sendTransaction, wallet, connected } = useWallet();
     const [ currentPubkey, setCurrentPubkey ] = useState("");
-    const [ solAmount, setSolAmount ] = useState<Number>(1.0);
-    // const [ network]
+    const [ solAmount, setSolAmount ] = useState<number>(1.0);
+    const [ isTestnet, setIsTestnet ] = useState<boolean>(true);
+    // const [ showError, setShowError ] = useState<string>("");
+
+    // Set up different connections for testnet and devnet.
+    const testnetURL = clusterApiUrl(WalletAdapterNetwork.Testnet);
+    const testnetConnection = new Connection(testnetURL);
+    const devnetURL = clusterApiUrl(WalletAdapterNetwork.Devnet);
+    const devnetConnection = new Connection(devnetURL);
 
 
     function handleSolChange(event: any) {
         setSolAmount(event.target.value.parseFloat());
     }
+
+    // Request airdrop
+    async function handleAirdropRequest(event: any) {
+        if (publicKey) {
+            try {
+                await ((isTestnet ? testnetConnection : devnetConnection)
+                    .requestAirdrop(publicKey, LAMPORTS_PER_SOL * solAmount))
+                    .then((resp: any) => {
+                        console.log(resp);
+                    });
+            } catch (error: any) {
+                console.log(error);
+            }
+        } else {
+            try {
+                const pkey = new PublicKey(currentPubkey);
+                await ((isTestnet ? testnetConnection : devnetConnection)
+                    .requestAirdrop(pkey, LAMPORTS_PER_SOL * solAmount))
+                    .then((resp: any) => {
+                        console.log(resp);
+                    });
+            } catch (error: any) {
+                console.log(error);
+            }
+        }
+        
+    }
     
     return (
+        <>
         <Container fluid="sm">
             <Row>
                 <Col className='d-flex justify-content-center px-2 py-5'>
@@ -46,41 +83,41 @@ export default function Faucet (props: IFaucetProps) {
                                         step="0.5"
                                         onChange={handleSolChange}/>
                                     </Form.Group>
-                                    
-                                    <Form.Check
-                                        inline
+
+                                    <Form.Check 
+                                        checked={isTestnet}
+                                        onClick={() => setIsTestnet((old) => {return !old})}
+                                        type="switch"
                                         label="Testnet"
-                                        name="testnet"
-                                        type="radio"
-                                        id="inline-testnet-radio"
-                                        checked={wallet?.adapter.url.includes('testnet')}
-                                        disabled
-                                        />
-                                    <Form.Check
-                                        inline
+                                        id="testnet-switch"
+                                    />
+                                    <Form.Check 
+                                        checked={!isTestnet}
+                                        onClick={() => setIsTestnet((old) => {return !old})}
+                                        type="switch"
                                         label="Devnet"
-                                        name="devnet"
-                                        type='radio'
-                                        id='inline-devnet-radio'
-                                        checked={wallet?.adapter.url.includes('devnet')}
-                                        disabled
-                                        />
-                                    <Form.Check
-                                        inline
-                                        label="Mainnet-beta"
-                                        name="mainnet"
-                                        type='radio'
-                                        id='inline-mainnet-radio'
-                                        checked={wallet?.adapter.url.includes('mainnet')}
-                                        disabled
-                                        />
-                                    
+                                        id="devnet-switch"
+                                    />
                                 </Form>
                             </Container>
                         </Card.Body>
+                        <Card.Footer>
+                            <Container>
+                                <Button 
+                                    className='ml-auto' 
+                                    variant='primary'
+                                    onClick={handleAirdropRequest}>
+                                Send
+                                </Button>
+                            </Container>
+                        </Card.Footer>
                     </Card>
                 </Col>
             </Row>
         </Container>
+        <ToastContainer>
+            
+        </ToastContainer>
+        </>
     );
 }

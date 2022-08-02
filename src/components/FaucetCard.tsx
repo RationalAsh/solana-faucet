@@ -7,6 +7,7 @@ import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
 import NotificationToast from './NotificationToast';
 
 export interface IFaucetProps {
+    
 }
 
 
@@ -18,7 +19,7 @@ export default function Faucet (props: IFaucetProps) {
     const [ solAmount, setSolAmount ] = useState<number>(1.0);
     const [ isTestnet, setIsTestnet ] = useState<boolean>(true);
     
-    const [ errorString, setErrorString ] = useState<string>("");
+    const [ errorString, setErrorString ] = useState<string>(""); 
     const [ showError, setShowError ] = useState<boolean>(false);
     const [ showTransactionStart, setShowTransactionStart ] = useState<boolean>(false);
     const [ showTransactionSuccess, setShowTransactionSuccess ] = useState<boolean>(false);

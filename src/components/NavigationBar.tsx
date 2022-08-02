@@ -44,7 +44,7 @@ const NavigationBar: React.FunctionComponent<INavigationBarProps> = (props) => {
             check out <a href="https://www.ashwinnarayan.com/" target="_blank">my home page</a>.</p> 
 
             <p className='text-justify'>This project is open source. Check out the code 
-            <a href='https://github.com/RationalAsh/solana-faucet' target='_blank' rel='noreferrer'>here</a></p>
+            <a href='https://github.com/RationalAsh/solana-faucet' target='_blank' rel='noreferrer'> here</a>.</p>
         </Modal.Body>
     </Modal>
     </>

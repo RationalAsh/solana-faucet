@@ -4,6 +4,7 @@ import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { useState, useEffect } from 'react';
 import { clusterApiUrl, Connection, LAMPORTS_PER_SOL, PublicKey } from '@solana/web3.js';
 import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
+import NotificationToast from './NotificationToast';
 
 export interface IFaucetProps {
 }
@@ -16,7 +17,11 @@ export default function Faucet (props: IFaucetProps) {
     const [ currentPubkey, setCurrentPubkey ] = useState("");
     const [ solAmount, setSolAmount ] = useState<number>(1.0);
     const [ isTestnet, setIsTestnet ] = useState<boolean>(true);
-    // const [ showError, setShowError ] = useState<string>("");
+    
+    const [ errorString, setErrorString ] = useState<string>("");
+    const [ showError, setShowError ] = useState<boolean>(false);
+    const [ showTransactionStart, setShowTransactionStart ] = useState<boolean>(false);
+    const [ showTransactionSuccess, setShowTransactionSuccess ] = useState<boolean>(false);
 
     // Set up different connections for testnet and devnet.
     const testnetURL = clusterApiUrl(WalletAdapterNetwork.Testnet);
@@ -32,28 +37,45 @@ export default function Faucet (props: IFaucetProps) {
     // Request airdrop
     async function handleAirdropRequest(event: any) {
         if (publicKey) {
+            setShowTransactionStart(true);
             try {
                 await ((isTestnet ? testnetConnection : devnetConnection)
                     .requestAirdrop(publicKey, LAMPORTS_PER_SOL * solAmount))
                     .then((resp: any) => {
                         console.log(resp);
+                        setShowTransactionSuccess(true);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        setErrorString(error.toString());
+                        setShowError(true);
                     });
             } catch (error: any) {
                 console.log(error);
+                setErrorString(error.toString());
+                setShowError(true);
             }
         } else {
             try {
+                setShowTransactionStart(true);
                 const pkey = new PublicKey(currentPubkey);
                 await ((isTestnet ? testnetConnection : devnetConnection)
                     .requestAirdrop(pkey, LAMPORTS_PER_SOL * solAmount))
                     .then((resp: any) => {
                         console.log(resp);
+                        setShowTransactionSuccess(true);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        setErrorString(error.toString());
+                        setShowError(true);
                     });
             } catch (error: any) {
                 console.log(error);
+                setErrorString(error.toString());
+                setShowError(true);
             }
         }
-        
     }
     
     return (
@@ -73,7 +95,8 @@ export default function Faucet (props: IFaucetProps) {
                                     <Form.Control 
                                         type='text' 
                                         disabled={connected}
-                                        value={publicKey ? publicKey.toBase58() : currentPubkey}/>
+                                        value={publicKey ? publicKey.toBase58() : currentPubkey}
+                                        onChange={(e) => setCurrentPubkey(e.target.value)}/>
                                     </Form.Group>
                                     <Form.Group as={Row} className='px-2 py-2'>
                                     <Form.Label htmlFor='sol-amount'>SOL</Form.Label>
@@ -116,7 +139,33 @@ export default function Faucet (props: IFaucetProps) {
             </Row>
         </Container>
         <ToastContainer>
-            
+            <NotificationToast 
+                heading='Transaction Error' 
+                body={errorString}
+                variant='Danger'
+                show={showError}
+                setShow={setShowError}
+                delay={5000}
+                autohide={false}
+                />
+            <NotificationToast 
+                heading='Transaction Started' 
+                body="Airdrop request sent!"
+                variant='Info'
+                show={showTransactionStart}
+                setShow={setShowTransactionStart}
+                delay={5000}
+                autohide={true}
+                />
+            <NotificationToast 
+                heading='Transaction Success!' 
+                body="Airdrop succeeded!"
+                variant='Success'
+                show={showTransactionSuccess}
+                setShow={setShowTransactionSuccess}
+                delay={5000}
+                autohide={true}
+                />
         </ToastContainer>
         </>
     );

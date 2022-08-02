@@ -13,7 +13,11 @@ export interface INotificationToastProps {
 
 export default function NotificationToast (props: INotificationToastProps) {
     return (
-          <Toast onClose={() => props.setShow(false)} show={props.show} delay={props.delay} autohide={props.autohide}>
+          <Toast onClose={() => props.setShow(false)} 
+                 show={props.show} 
+                 delay={props.delay} 
+                 autohide={props.autohide}
+                 bg={props.variant.toLowerCase()}>
             <Toast.Header>{props.heading}</Toast.Header>
             <Toast.Body>{props.body}</Toast.Body>
           </Toast>

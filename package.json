@@ -30,6 +30,7 @@
     "test": "react-app-rewired test",
     "eject": "react-app-rewired eject"
   },
+  "homepage": "http://www.ashwinnarayan.com/dapps/solana-faucet",
   "eslintConfig": {
     "extends": [
       "react-app",

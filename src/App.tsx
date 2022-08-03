@@ -1,31 +1,19 @@
 import { createDefaultAuthorizationResultCache, SolanaMobileWalletAdapter } from '@solana-mobile/wallet-adapter-mobile';
-import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
+import { WalletAdapterNetwork, WalletError } from '@solana/wallet-adapter-base';
 import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
-import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
+import { WalletDialogProvider, WalletMultiButton } from '@solana/wallet-adapter-material-ui';
 import {
-    GlowWalletAdapter,
     PhantomWalletAdapter,
-    SlopeWalletAdapter,
-    SolflareWalletAdapter,
-    TorusWalletAdapter,
 } from '@solana/wallet-adapter-wallets';
 import { clusterApiUrl } from '@solana/web3.js';
-import React, { FC, ReactNode, useMemo } from 'react';
-import Faucet from './components/FaucetCard';
-import Footer from './components/Footer';
-import NavigationBar from './components/NavigationBar'
+import React, { FC, ReactNode, useCallback, useMemo } from 'react';
 
-require('./App.css');
-require('@solana/wallet-adapter-react-ui/styles.css');
+import logo from './logo.svg';
+import './App.css';
+import ResponsiveAppBar from './components/navigation/AppBar';
+import { Box, Container } from '@mui/material';
 
-const App: FC = () => {
-    return (
-        <Context>
-            <Content />
-        </Context>
-    );
-};
-export default App;
+import{ SnackbarProvider, useSnackbar } from 'notistack'
 
 const Context: FC<{ children: ReactNode }> = ({ children }) => {
     // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
@@ -41,37 +29,46 @@ const Context: FC<{ children: ReactNode }> = ({ children }) => {
     // of wallets that your users connect to will be loaded.
     const wallets = useMemo(
         () => [
-            new SolanaMobileWalletAdapter({
-                appIdentity: { name: 'Solana Create React App Starter App' },
-                authorizationResultCache: createDefaultAuthorizationResultCache(),
-                cluster: network
-            }),
             new PhantomWalletAdapter(),
-            new GlowWalletAdapter(),
-            new SlopeWalletAdapter(),
-            new SolflareWalletAdapter({ network }),
-            new TorusWalletAdapter(),
+            new SolanaMobileWalletAdapter(
+                {   appIdentity: {name: "I Mint, Therefore I Am"}, 
+                    authorizationResultCache: createDefaultAuthorizationResultCache(),
+                    cluster: network
+                })
         ],
         [network]
     );
 
-    return (
-        <ConnectionProvider endpoint={endpoint}>
-            <WalletProvider wallets={wallets} autoConnect>
-                <WalletModalProvider>
-                    {children}
-                </WalletModalProvider>
-            </WalletProvider>
-        </ConnectionProvider>
-    );
+  return (
+        <SnackbarProvider maxSnack={5}>
+            <ConnectionProvider endpoint={endpoint}>
+                <WalletProvider autoConnect wallets={wallets}>
+                    <WalletDialogProvider>
+                        {children}
+                    </WalletDialogProvider>
+                </WalletProvider>
+            </ConnectionProvider>
+        </SnackbarProvider>
+  );
 };
 
 const Content: FC = () => {
-    return (
-        <>
-            <NavigationBar />
-            <Faucet/>
-            <Footer/>
-        </>
-    );
+  return (
+      <div className="App">
+          <ResponsiveAppBar/>
+          <Box height="100vh" sx={{ backgroundColor: 'secondary.main' }}>
+
+          </Box>
+      </div>
+  );
 };
+
+const App: FC = () => {
+  return (
+      <Context>
+          <Content />
+      </Context>
+  );
+};
+
+export default App;

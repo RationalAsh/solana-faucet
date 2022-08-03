@@ -21,7 +21,8 @@ import { AiOutlineWallet } from 'react-icons/ai'
 import { yellow } from '@mui/material/colors';
 import AboutDialog from './AboutDialog';
 
-import imtia from '../images/imtia.jpeg'
+import imtia from '../../img/imtia.jpeg'
+import WalletButton from '../wallet/WalletButton';
 
 const pages = ['About', 'Contact Me'];
 const settings = ['Connect Wallet'];
@@ -56,12 +57,13 @@ const ResponsiveAppBar = () => {
   }
 
   function handleWalletConnect(event: any) {
+    setAnchorElUser(null);
     connect().catch(()=> {});
   }
 
   function handleWalletDisconnect(event: any) {
+    setAnchorElUser(null);
     disconnect().catch(() => {});
-    handleCloseUserMenu();
   }
 
   return (
@@ -85,7 +87,7 @@ const ResponsiveAppBar = () => {
               textDecoration: 'none',
             }}
           >
-            I MINT, THEREFORE I AM
+            Ashwin's Solana Faucet
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -117,7 +119,7 @@ const ResponsiveAppBar = () => {
               }}
             >
               <MenuItem onClick={() => setShowAbout(true)}>
-                  <Typography textAlign="center">About</Typography>
+                  <Typography color='#000000' textAlign="center">About</Typography>
               </MenuItem>
               {/* {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
@@ -143,7 +145,7 @@ const ResponsiveAppBar = () => {
               textDecoration: 'none',
             }}
           >
-            I MINT, THEREFORE I AM
+            Ashwin's Solana Faucet
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
           <Button
@@ -163,45 +165,8 @@ const ResponsiveAppBar = () => {
             ))} */}
           </Box>
 
-          <Box sx={{ flexGrow: 0, bgcolor: "#9945FF" }}>
-            <Tooltip title={connected?"Wallet Connected":"Connect Wallet"}>
-              <IconButton onClick={wallet?handleOpenUserMenu:handleWalletSelect} sx={{ p: 0 }}>
-                <Avatar sx={{ bgcolor: connected ? "#14F195" : "#F11470" }}>
-                  { wallet ? 
-                    <WalletIcon wallet={wallet}/> :
-                    <AiOutlineWallet/>
-                  }
-                </Avatar>
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              { publicKey ?
-                <MenuItem onClick={publicKey?handleWalletDisconnect:handleWalletConnect}>
-                  <Typography textAlign="center">
-                  { connected ? 
-                    "Disconnect Wallet" :
-                    "Connect Wallet"
-                  }
-                  </Typography>
-                </MenuItem> :
-                <></>
-              }
-            </Menu>
+          <Box sx={{ flexGrow: 0, bgcolor: "#000000" }}>
+              <WalletButton/>
           </Box>
         </Toolbar>
       </Container>

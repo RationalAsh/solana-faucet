@@ -5,6 +5,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { Grid } from '@mui/material';
 
 const bull = (
   <Box
@@ -41,8 +42,15 @@ const card = (
 
 export default function OutlinedCard() {
   return (
-    <Box sx={{ minWidth: 275 }}>
-      <Card variant="outlined">{card}</Card>
-    </Box>
+    <Grid container
+      spacing={0}
+      direction="column"
+      alignItems="center">
+        <Grid item xs={6}>
+          <Card variant='outlined'>
+            {card}
+          </Card>
+        </Grid>
+    </Grid>
   );
 }

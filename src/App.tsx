@@ -57,7 +57,7 @@ const Content: FC = () => {
   return (
       <div className="App">
           <ResponsiveAppBar/>
-          <Box height="100vh" sx={{ backgroundColor: 'secondary.main' }}>
+          <Box height="100vh" sx={{ backgroundColor: 'palette.background.paper' }}>
             <OutlinedCard/>
           </Box>
       </div>

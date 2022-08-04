@@ -165,7 +165,7 @@ const ResponsiveAppBar = () => {
             ))} */}
           </Box>
 
-          <Box sx={{ flexGrow: 0, bgcolor: "#000000" }}>
+          <Box sx={{ flexGrow: 0 }}>
               <WalletButton/>
           </Box>
         </Toolbar>

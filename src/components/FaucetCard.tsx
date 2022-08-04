@@ -84,7 +84,7 @@ export default function Faucet (props: IFaucetProps) {
         <Container fluid="sm">
             <Row>
                 <Col className='d-flex justify-content-center px-2 py-5'>
-                    <Card bg='dark' text='light' className='shadow' style={{width: '48rem'}}>
+                    <Card className='shadow' style={{width: '48rem'}}>
                         <Card.Header>
                             <Card.Title>Airdrop Yourself SOL</Card.Title>
                         </Card.Header>

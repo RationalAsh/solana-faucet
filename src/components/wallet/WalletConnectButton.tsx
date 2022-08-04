@@ -1,6 +1,7 @@
 import { Avatar, IconButton, Tooltip } from '@mui/material';
 import { WalletIcon } from '@solana/wallet-adapter-material-ui';
 import { useWallet } from '@solana/wallet-adapter-react';
+import { useSnackbar } from 'notistack';
 import * as React from 'react';
 import { useMemo } from 'react';
 
@@ -9,12 +10,18 @@ export interface IWalletConnectButtonProps {
 
 export default function WalletConnectButton (props: IWalletConnectButtonProps) {
     const { wallet, connect, connecting, connected } = useWallet();
+    const { enqueueSnackbar } = useSnackbar();
 
     function handleClick(event: any) {
         if (!connected) {
-            connect().catch(() => {
+            connect()
+                .then(() => {
+                    enqueueSnackbar('Wallet Connected!', { variant: 'success', autoHideDuration: 3000});
+                })
+                .catch(() => {
 
             })
+            
         }
     }
 

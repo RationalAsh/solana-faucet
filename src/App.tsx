@@ -15,6 +15,7 @@ import { Box, Container } from '@mui/material';
 
 import{ SnackbarProvider, useSnackbar } from 'notistack'
 import OutlinedCard from './components/airdrop/Airdropper';
+import Airdropper from './components/airdrop/Airdropper';
 
 const Context: FC<{ children: ReactNode }> = ({ children }) => {
     // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
@@ -57,8 +58,8 @@ const Content: FC = () => {
   return (
       <div className="App">
           <ResponsiveAppBar/>
-          <Box height="100vh" sx={{ backgroundColor: 'palette.background.paper' }}>
-            <OutlinedCard/>
+          <Box height="100vh" sx={{ display: 'flex', flexWrap: 'wrap', backgroundColor: 'palette.background.paper' }}>
+            <Airdropper/>
           </Box>
       </div>
   );

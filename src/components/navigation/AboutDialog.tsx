@@ -13,6 +13,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
 import { Dispatch, SetStateAction } from 'react';
+import { Box, Grid, Link } from '@mui/material';
+import { Container } from 'react-bootstrap';
 
 const Transition = React.forwardRef(function Transition(
     props: TransitionProps & {
@@ -58,9 +60,20 @@ export default function AboutDialog(props: AboutDialogProps) {
               </Button>
             </Toolbar>
           </AppBar>
-          <Typography variant="h3">
-          1. What does this dApp do?
-          </Typography>
+          <Box>
+            <Grid container alignItems="center" justifyContent="center" sx={{ mt: 2 }}>
+              <Grid item xs={12} md={6}>
+              <Typography variant="body1">
+              This is a React app that airdrops SOL to your testnet or devnet 
+              wallets. I made it to learn how to write apps that interact with Solana and to make it easier 
+              to airdrop myself SOL for the many Solana projects I'm trying out. To find out more about me, 
+              check out <Link rel="noreferrer" href="https://www.ashwinnarayan.com/" target="_blank">my home page</Link>.
+              </Typography>
+              <p className='text-justify'>This project is open source. Check out the code 
+              <Link href='https://github.com/RationalAsh/solana-faucet' target='_blank' rel='noreferrer'> here</Link>.</p>
+              </Grid>
+            </Grid>
+          </Box>
         </Dialog>
       </div>
     );

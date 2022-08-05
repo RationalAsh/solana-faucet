@@ -68,9 +68,19 @@ export default function AboutDialog(props: AboutDialogProps) {
               wallets. I made it to learn how to write apps that interact with Solana and to make it easier 
               to airdrop myself SOL for the many Solana projects I'm trying out. To find out more about me, 
               check out <Link rel="noreferrer" href="https://www.ashwinnarayan.com/" target="_blank">my home page</Link>.
+              <p>This project is open source. Check out the code 
+              <Link href='https://github.com/RationalAsh/solana-faucet' target='_blank' rel='noreferrer'> here</Link></p>
               </Typography>
-              <p className='text-justify'>This project is open source. Check out the code 
-              <Link href='https://github.com/RationalAsh/solana-faucet' target='_blank' rel='noreferrer'> here</Link>.</p>
+
+              <Typography variant="h4">
+              FAQ
+              </Typography>
+              <Typography variant="h5">
+              Why do I need to connect my wallet?
+              </Typography>
+              <Typography variant="body1">
+              You do not need to. If you connect your wallet however, the website will auto-fill your public key for the airdrop.
+              </Typography>
               </Grid>
             </Grid>
           </Box>

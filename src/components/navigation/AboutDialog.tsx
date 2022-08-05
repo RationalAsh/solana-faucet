@@ -60,8 +60,8 @@ export default function AboutDialog(props: AboutDialogProps) {
               </Button>
             </Toolbar>
           </AppBar>
-          <Box>
-            <Grid container alignItems="center" justifyContent="center" sx={{ mt: 2 }}>
+          <Box sx={{ p: 2 }}>
+            <Grid container alignItems="center" justifyContent="center">
               <Grid item xs={12} md={6}>
               <Typography variant="body1">
               This is a React app that airdrops SOL to your testnet or devnet 

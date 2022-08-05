@@ -120,7 +120,7 @@ const ResponsiveAppBar = () => {
               }}
             >
               <MenuItem onClick={() => setShowAbout(true)}>
-                  <Typography color='#000000' textAlign="center">About</Typography>
+                  <Typography textAlign="center">About</Typography>
               </MenuItem>
               {/* {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
@@ -140,8 +140,8 @@ const ResponsiveAppBar = () => {
               flexGrow: 1,
               fontFamily: 'monospace',
               fontWeight: 700,
-              fontSize: 10,
-              letterSpacing: '.1rem',
+              fontSize: 12,
+              letterSpacing: '.08rem',
               color: 'inherit',
               textDecoration: 'none',
             }}

@@ -7,17 +7,13 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import AdbIcon from '@mui/icons-material/Adb';
 
-import { useWalletDialog, WalletDialogProvider, WalletIcon, WalletMultiButton } from '@solana/wallet-adapter-material-ui';
+import { useWalletDialog } from '@solana/wallet-adapter-material-ui';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { useEffect, useMemo, useState } from 'react';
 
-import { AiOutlineWallet } from 'react-icons/ai'
 import { yellow } from '@mui/material/colors';
 import AboutDialog from './AboutDialog';
 

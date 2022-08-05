@@ -4,6 +4,7 @@ import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react
 import { WalletDialogProvider, WalletMultiButton } from '@solana/wallet-adapter-material-ui';
 import {
     PhantomWalletAdapter,
+    SolflareWalletAdapter,
 } from '@solana/wallet-adapter-wallets';
 import { clusterApiUrl } from '@solana/web3.js';
 import React, { FC, ReactNode, useCallback, useMemo } from 'react';
@@ -36,7 +37,8 @@ const Context: FC<{ children: ReactNode }> = ({ children }) => {
                 {   appIdentity: {name: "I Mint, Therefore I Am"}, 
                     authorizationResultCache: createDefaultAuthorizationResultCache(),
                     cluster: network
-                })
+                }),
+            new SolflareWalletAdapter()
         ],
         [network]
     );

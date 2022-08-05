@@ -15,7 +15,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 
 import { useWalletDialog, WalletDialogProvider, WalletIcon, WalletMultiButton } from '@solana/wallet-adapter-material-ui';
 import { useWallet } from '@solana/wallet-adapter-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { AiOutlineWallet } from 'react-icons/ai'
 import { yellow } from '@mui/material/colors';
@@ -24,6 +24,7 @@ import AboutDialog from './AboutDialog';
 import imtia from '../../img/imtia.jpeg'
 import brandLogo from '../../img/brand-logo.png'
 import WalletButton from '../wallet/WalletButton';
+import { useSnackbar } from 'notistack';
 
 const pages = ['About', 'Contact Me'];
 const settings = ['Connect Wallet'];
@@ -35,8 +36,25 @@ const ResponsiveAppBar = () => {
   const { setOpen } = useWalletDialog();
   const [anchor, setAnchor] = useState<HTMLElement>();
   const [showAbout, setShowAbout] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const base58 = useMemo(() => publicKey?.toBase58(), [publicKey]);
+
+  // Notifications for wallet connections.
+  useEffect(() => {
+    if (connecting) {
+      enqueueSnackbar('Connecting to wallet ...', {variant: 'info', autoHideDuration: 3000});
+    }
+
+    if (connected) {
+      enqueueSnackbar('Wallet Connected!', {variant: 'success', autoHideDuration: 3000});
+    }
+  
+    return () => {
+      // Cleanup code goes here.
+    }
+  }, [connected, connecting])
+  
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);

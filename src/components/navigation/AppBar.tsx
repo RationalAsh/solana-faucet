@@ -22,6 +22,7 @@ import { yellow } from '@mui/material/colors';
 import AboutDialog from './AboutDialog';
 
 import imtia from '../../img/imtia.jpeg'
+import brandLogo from '../../img/brand-logo.png'
 import WalletButton from '../wallet/WalletButton';
 
 const pages = ['About', 'Contact Me'];
@@ -71,7 +72,7 @@ const ResponsiveAppBar = () => {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <img alt="logo" src={imtia} style={{width:"4rem", height: undefined, padding:8}}></img>
+          <img alt="logo" src={brandLogo} style={{width:"4rem", height: undefined, padding:8}}></img>
           <Typography
             variant="h6"
             noWrap

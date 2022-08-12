@@ -56,6 +56,55 @@ const card = (
       // setSolAmount(event.target.value.parseFloat());
       console.log(event)
     }
+
+    // Split up airdrop requests if the amount is larger than 1 SOL.
+    async function handleAirdropLarge(event: any) {
+      const solIntAmount = Math.floor(solAmount);
+      const solFracAmount = solAmount - solIntAmount;
+
+      function delay(ms: number) {
+        return new Promise( resolve => setTimeout(resolve, ms) );
+      }
+    
+      for(let i=0; i < solIntAmount; i++) {
+        await delay(10000);
+        if (publicKey) {
+          try {
+            await ((isTestnet ? testnetConnection : devnetConnection)
+            .requestAirdrop(publicKey, LAMPORTS_PER_SOL * solIntAmount))
+            .then((resp: any) => {
+              console.log(resp);
+              enqueueSnackbar('Transaction Success!', { variant: 'success', autoHideDuration: 3000});
+            })
+            .catch((error) => {
+              console.log(error);
+              enqueueSnackbar(error.toString(), { variant: 'error', autoHideDuration: 3000});
+            });
+          } catch (error: any) {
+            console.log(error);
+            enqueueSnackbar(error.toString(), { variant: 'error', autoHideDuration: 3000});
+          }
+        } else {
+          try {
+            setShowTransactionStart(true);
+            const pkey = new PublicKey(currentPubkey);
+            await ((isTestnet ? testnetConnection : devnetConnection)
+            .requestAirdrop(pkey, LAMPORTS_PER_SOL * solIntAmount))
+            .then((resp: any) => {
+              console.log(resp);
+              enqueueSnackbar('Transaction Success!', { variant: 'success', autoHideDuration: 3000});
+            })
+            .catch((error) => {
+              console.log(error);
+              enqueueSnackbar(error.toString(), { variant: 'error', autoHideDuration: 3000});
+            });
+          } catch (error: any) {
+            console.log(error);
+            enqueueSnackbar(error.toString(), { variant: 'error', autoHideDuration: 3000});
+          }
+        }
+      }
+    }
     
     // Request airdrop
     async function handleAirdropRequest(event: any) {

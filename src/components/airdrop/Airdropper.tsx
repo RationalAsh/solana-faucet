@@ -65,7 +65,10 @@ const card = (
       function delay(ms: number) {
         return new Promise( resolve => setTimeout(resolve, ms) );
       }
-    
+      enqueueSnackbar(
+        'Airdrop amount is large. Will split up into multiple requests.', 
+        { variant: 'info', autoHideDuration: 3000}
+      );
       for(let i=0; i < solIntAmount; i++) {
         await delay(10000);
         if (publicKey) {

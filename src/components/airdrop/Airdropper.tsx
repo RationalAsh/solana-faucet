@@ -53,8 +53,15 @@ const card = (
     const { enqueueSnackbar } = useSnackbar();
     
     function handleSolChange(event: any) {
-      // setSolAmount(event.target.value.parseFloat());
-      console.log(event)
+      if (event.target.value < 0) {
+        // Don't do anything
+        console.log("Sol amount not allowed to be negative!!");
+        setSolAmount(0);
+      } else {
+        setSolAmount(event.target.value);
+      }
+      
+      console.log(event);
     }
 
     // Split up airdrop requests if the amount is larger than 1 SOL.
@@ -65,57 +72,48 @@ const card = (
       function delay(ms: number) {
         return new Promise( resolve => setTimeout(resolve, ms) );
       }
-      enqueueSnackbar(
-        'Airdrop amount is large. Will split up into multiple requests.', 
-        { variant: 'info', autoHideDuration: 5000}
-      );
-      for(let i=0; i < solIntAmount; i++) {
-        await delay(10000);
-        if (publicKey) {
-          try {
-            await ((isTestnet ? testnetConnection : devnetConnection)
-            .requestAirdrop(publicKey, LAMPORTS_PER_SOL * solIntAmount))
-            .then((resp: any) => {
-              console.log(resp);
-              enqueueSnackbar('Transaction Success!', { variant: 'success', autoHideDuration: 3000});
-            })
-            .catch((error) => {
-              console.log(error);
-              enqueueSnackbar(error.toString(), { variant: 'error', autoHideDuration: 3000});
-            });
-          } catch (error: any) {
-            console.log(error);
-            enqueueSnackbar(error.toString(), { variant: 'error', autoHideDuration: 3000});
-          }
-        } else {
-          try {
-            setShowTransactionStart(true);
-            const pkey = new PublicKey(currentPubkey);
-            await ((isTestnet ? testnetConnection : devnetConnection)
-            .requestAirdrop(pkey, LAMPORTS_PER_SOL * solIntAmount))
-            .then((resp: any) => {
-              console.log(resp);
-              enqueueSnackbar('Transaction Success!', { variant: 'success', autoHideDuration: 3000});
-            })
-            .catch((error) => {
-              console.log(error);
-              enqueueSnackbar(error.toString(), { variant: 'error', autoHideDuration: 3000});
-            });
-          } catch (error: any) {
-            console.log(error);
-            enqueueSnackbar(error.toString(), { variant: 'error', autoHideDuration: 3000});
+      console.log(solAmount);
+      
+      if (solAmount > 1.0) {
+        enqueueSnackbar(
+          `Large airdrop requested. Splitting into ${solIntAmount} requests...`, 
+          { variant: 'info', autoHideDuration: 3000}
+        );
+        for(let i=0; i<solIntAmount; i++) {
+          const res = await handleAirdropRequest(1.0);
+          enqueueSnackbar(
+            `Finished request ${i}`, 
+            { variant: 'success', autoHideDuration: 3000}
+          );
+          for (let j=0; j<10; j++) {
+            enqueueSnackbar(
+              `Next request in ${10-j} seconds...`, 
+              { variant: 'info', autoHideDuration: 1000}
+            );
+            await delay(1000);
           }
         }
+      } else {
+        enqueueSnackbar(
+          `Airdropping ${solIntAmount} to you...`, 
+          { variant: 'info', autoHideDuration: 3000}
+        );
+        const res = await handleAirdropRequest(solAmount);
+        enqueueSnackbar(
+          `Done!`, 
+          { variant: 'success', autoHideDuration: 3000}
+        );
       }
+
     }
     
     // Request airdrop
-    async function handleAirdropRequest(event: any) {
+    async function handleAirdropRequest(amount: number) {
       if (publicKey) {
-        enqueueSnackbar('Airdrop requested.', { variant: 'info', autoHideDuration: 3000});
+        
         try {
           await ((isTestnet ? testnetConnection : devnetConnection)
-          .requestAirdrop(publicKey, LAMPORTS_PER_SOL * solAmount))
+          .requestAirdrop(publicKey, LAMPORTS_PER_SOL * amount))
           .then((resp: any) => {
             console.log(resp);
             enqueueSnackbar('Transaction Success!', { variant: 'success', autoHideDuration: 3000});
@@ -133,7 +131,7 @@ const card = (
           setShowTransactionStart(true);
           const pkey = new PublicKey(currentPubkey);
           await ((isTestnet ? testnetConnection : devnetConnection)
-          .requestAirdrop(pkey, LAMPORTS_PER_SOL * solAmount))
+          .requestAirdrop(pkey, LAMPORTS_PER_SOL * amount))
           .then((resp: any) => {
             console.log(resp);
             enqueueSnackbar('Transaction Success!', { variant: 'success', autoHideDuration: 3000});
@@ -179,8 +177,8 @@ const card = (
                 label="Amount of SOL" 
                 variant="outlined"
                 type="number" 
-                defaultValue="1.0"
                 onChange={handleSolChange}
+                value={solAmount}
                 fullWidth
                 margin='normal'/>
               </Grid>
@@ -188,8 +186,8 @@ const card = (
                 <FormGroup>
                 <FormControlLabel 
                   control={<Switch onClick={() => setIsTestnet((old) => {return !old})} 
-                                   checked={isTestnet} 
-                                   defaultChecked />} 
+                                   checked={isTestnet}
+                                  />} 
                   label="Testnet" />
                 <FormControlLabel 
                   control={<Switch onClick={() => setIsTestnet((old) => {return !old})}
@@ -198,7 +196,7 @@ const card = (
                 </FormGroup>
               </Grid>
               <Grid item>
-                <Button variant='contained' onClick={handleAirdropRequest}>Send!</Button>
+                <Button variant='contained' onClick={handleAirdropLarge}>Send!</Button>
               </Grid>
             </Grid>
           </Paper>

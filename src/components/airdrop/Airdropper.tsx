@@ -67,7 +67,7 @@ const card = (
       }
       enqueueSnackbar(
         'Airdrop amount is large. Will split up into multiple requests.', 
-        { variant: 'info', autoHideDuration: 3000}
+        { variant: 'info', autoHideDuration: 5000}
       );
       for(let i=0; i < solIntAmount; i++) {
         await delay(10000);

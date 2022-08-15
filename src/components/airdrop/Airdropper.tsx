@@ -93,6 +93,7 @@ const card = (
             await delay(1000);
           }
         }
+        const res = await handleAirdropRequest(solFracAmount);
       } else {
         enqueueSnackbar(
           `Airdropping ${solIntAmount} to you...`, 
